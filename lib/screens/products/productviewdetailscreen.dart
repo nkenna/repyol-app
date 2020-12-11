@@ -154,13 +154,13 @@ class _ProductViewDetailState extends State<ProductViewDetail> {
                   width: double.infinity,
                   height: Get.height * 0.17,
                   decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       image: DecorationImage(
                           image: imageProvider,
                           fit: BoxFit.cover,
-                          colorFilter:
-                          ColorFilter.mode(Colors.amber, BlendMode.colorBurn)
+                          //colorFilter:
+                          //ColorFilter.mode(Colors.amber, BlendMode.colorBurn)
                       ),
                       boxShadow: [
                         BoxShadow(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:repyol/helpers/controlloader.dart';
 import 'package:repyol/screens/auth/forgotpasswordscreen.dart';
 import 'package:repyol/screens/auth/sendemailscreen.dart';
 import 'package:repyol/screens/auth/signupscreen.dart';
@@ -105,7 +106,12 @@ class _SignInScreenState extends State<SignInScreen> {
         child: RaisedButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPressed: () async{
-            Provider.of<AuthProvider>(context, listen: false).signInUser(emailController.text, passwordController.text);
+            if(GetUtils.isEmail(emailController.text)){
+              Provider.of<AuthProvider>(context, listen: false).signInUser(emailController.text, passwordController.text);
+            }else{
+              showErrorLoader("Valid email address is required");
+            }
+
             //Get.to(AddProductImagesScreen());
           },
           color: mainColor3,

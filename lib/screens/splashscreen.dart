@@ -47,9 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
       width: Get.width,
       height: Get.height,
       color: Colors.white,
-      child: Center(
-        child: Image.asset("assets/images/applogo.png", height: Get.height * 0.3),
-      ),
+      child: Image.asset("assets/images/splash.png", height: Get.height, width: Get.width, fit: BoxFit.cover,)
     );
   }
 }
