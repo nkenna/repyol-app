@@ -1,3 +1,4 @@
+import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -25,16 +26,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   checkAuth() async{
     await Provider.of<AuthProvider>(context, listen: false).retrieveUser();
-    Future.delayed(Duration(seconds: 3), () async {
+    Future.delayed(Duration(seconds: 1), () async {
 
         if(Provider.of<AuthProvider>(context, listen: false).user == null){
           print("should see user email::::::::::::::::::;1");
           //print(Provider.of<AuthProvider>(context, listen: false).user.email);
-          Get.offAll(SignInScreen());
+          Get.offAll(SignInScreen(), curve: Curves.easeInCirc, duration: Duration(milliseconds: 500), transition: Transition.downToUp);
         }else{
           print("should see user email::::::::::::::::::;2");
           print(Provider.of<AuthProvider>(context, listen: false).user.email);
-          Get.offAll(LandingScreen());
+          Get.offAll(LandingScreen(), curve: Curves.easeInCirc, duration: Duration(milliseconds: 500), transition: Transition.downToUp);
         }
 
 

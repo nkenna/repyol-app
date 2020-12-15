@@ -128,14 +128,14 @@ class _SignInScreenState extends State<SignInScreen> {
 
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: RaisedButton(
+        child: FlatButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPressed: () async{
             //Provider.of<AuthProvider>(context, listen: false).signInUser(emailController.text, passwordController.text);
-            Get.offAll(SignupScreen());
+            Get.offAll(SignupScreen(), curve: Curves.easeInCirc, duration: Duration(milliseconds: 500), transition: Transition.downToUp);
           },
-          color: mainColor8,
-          child: Text('Create account', style: TextStyle(color: mainColor3 ),),
+          color: Colors.white,
+          child: Text('Create account', style: TextStyle(color: mainColor3, fontFamily: 'PoppinsSemiBold', decoration: TextDecoration.underline ),),
         ),
       ),
     );
@@ -151,10 +151,16 @@ class _SignInScreenState extends State<SignInScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 20,),
-            Image.asset("assets/images/applogo.png", height: Get.height * 0.2,),
-            SizedBox(height: 20,),
-
+            Container(
+              width: Get.width,
+              height: Get.height * 0.25,
+              color: mainColor3,
+              child: Center(child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset("assets/images/applogo.png",),
+              )),
+            ),
+            SizedBox(height: 15,),
             emailField(),
             SizedBox(height: 10,),
             Padding(

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Widget nameField(){
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
       child: TextField(
         controller: nameController,
         keyboardType: TextInputType.name,
@@ -127,15 +128,13 @@ class _SignupScreenState extends State<SignupScreen> {
 
       child: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: RaisedButton(
+        child: FlatButton(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPressed: () async{
-
-            //Provider.of<AuthProvider>(context, listen: false).signInUser(emailController.text, passwordController.text);
-            Get.offAll(SignInScreen());
+            Get.offAll(SignInScreen(), curve: Curves.easeInCirc, duration: Duration(milliseconds: 500), transition: Transition.downToUp);
           },
-          color: mainColor8,
-          child: Text('Sign in', style: TextStyle(color: mainColor3 ),),
+          color: Colors.white,
+          child: Text('Sign in', style: TextStyle(color: mainColor3, decoration: TextDecoration.underline, fontFamily: 'PoppinsSemiBold'),),
         ),
       ),
     );
@@ -151,13 +150,45 @@ class _SignupScreenState extends State<SignupScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(height: 15,),
-            Image.asset("assets/images/applogo.png", height: Get.height * 0.2,),
-            SizedBox(height: 15,),
+            //SizedBox(height: 15,),
+            //
+            Container(
+              width: Get.width,
+              height: Get.height * 0.25,
+              color: mainColor3,
+              child: Center(child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset("assets/images/applogo.png",),
+              )),
+            ),
+            //SizedBox(height: 15,),
             nameField(),
             emailField(),
             SizedBox(height: 10,),
             passwordField(),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: RichText(
+                text: TextSpan(
+                  text: "By clicking on the Sign up button, you have agreed to our ",
+                  style: TextStyle(height: 1.5, color: Colors.black, fontFamily: 'PoppinsRegular', fontSize: 12),
+                  children: [
+                    TextSpan(
+                      text: "PRIVACY POLICY",
+                      style: TextStyle(height: 1.5, fontFamily: 'PoppinsSemiBold', color: Colors.black, decoration: TextDecoration.underline, decorationColor: mainColor3, decorationStyle: TextDecorationStyle.wavy, fontSize: 12),
+                    ),
+                    TextSpan(
+                      text: " and ",
+                      style: TextStyle(height: 1.5, color: Colors.black, fontFamily: 'PoppinsRegular', fontSize: 12),
+                    ),
+                    TextSpan(
+                      text: "TERMS OF SERVICE.",
+                      style: TextStyle(height: 1.5,fontFamily: 'PoppinsSemiBold', color: Colors.black, decoration: TextDecoration.underline, decorationColor: mainColor3, decorationStyle: TextDecorationStyle.wavy, fontSize: 12),
+                    ),
+                  ]
+                ),
+              ),
+            ),
             continueBtn(),
 
             createAcctBtn(),
