@@ -12,6 +12,7 @@ Color mainColor5 = Color(0xff77b200);
 Color mainColor6 = Color(0xffEBF6E3);
 Color mainColor7 = Color(0xffD0BBFE);
 Color mainColor8 = Color(0xff93A2B5);
+Color mainColor9 = Color(0xffFBF7D3);
 
 Map<int, Color> cColor = {
   50: Color.fromRGBO(66, 47, 143, .1),

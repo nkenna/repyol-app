@@ -143,6 +143,17 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+              child: Text(
+                "Enter the reset code sent to your email.",
+                textAlign: TextAlign.left,
+                style: TextStyle(color: Colors.black, fontFamily: 'PoppinsRegular'),
+              ),
+            ),
+
+
             emailField(),
             codeField(),
             SizedBox(height: 10,),

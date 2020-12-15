@@ -134,7 +134,7 @@ class _SignupScreenState extends State<SignupScreen> {
             //Provider.of<AuthProvider>(context, listen: false).signInUser(emailController.text, passwordController.text);
             Get.offAll(SignInScreen());
           },
-          color: mainColor7,
+          color: mainColor8,
           child: Text('Sign in', style: TextStyle(color: mainColor3 ),),
         ),
       ),

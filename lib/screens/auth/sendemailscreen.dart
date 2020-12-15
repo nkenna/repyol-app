@@ -78,6 +78,14 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+            child: Text(
+              "Enter your email address. We will send a reset code to it.",
+              style: TextStyle(color: Colors.black, fontFamily: 'PoppinsRegular'),
+            ),
+          ),
+
           emailField(),
 
           continueBtn(),

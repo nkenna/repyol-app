@@ -79,7 +79,7 @@ class _ProductCategoryListScreenState extends State<ProductCategoryListScreen> {
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     image: DecorationImage(
-                        image: NetworkImage(product.images.isNotEmpty ? product.images[0] : 'https://avatars0.githubusercontent.com/u/8264639?s=460&v=4'),
+                        image: NetworkImage(product.images.isNotEmpty ? product.images[0] : 'https://firebasestorage.googleapis.com/v0/b/talkabout-bf655.appspot.com/o/avatar%2Fapplogo.png?alt=media'),
                         fit: BoxFit.cover
                     ),
                     boxShadow: [
