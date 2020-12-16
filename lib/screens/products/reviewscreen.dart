@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:keyboard_attachable/keyboard_attachable.dart';
 import 'package:provider/provider.dart';
+import 'package:repyol/helpers/controlloader.dart';
 import 'package:repyol/helpers/data.dart';
 import 'package:repyol/models/product.dart';
 import 'package:repyol/providers/authprovider.dart';
@@ -37,6 +38,7 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
   double rating = 0.0;
   bool _showList = false;
+  Map<String, dynamic> mentionedUser = {};
   List<Map<String, dynamic>> _users = List<Map<String, dynamic>>();
 
   @override
@@ -63,6 +65,7 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
           map1["id"] = user.name;
           map1["display"] = user.name;
           map1["image"] = user.image;
+          map1['ref'] = user.ref;
           print(map1);
           _users.add(map1);
         });
@@ -137,11 +140,11 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
 
   Widget bottomContainer(BuildContext context) {
     var pProvider = Provider.of<ProductsProvider>(context, listen: true);
-    if (pProvider.selectedReview != null) {
+    /** if (pProvider.selectedReview != null) {
       rating = pProvider?.selectedReview?.rating ?? 0.0;
       key.currentState.controller.text =
           pProvider?.selectedReview?.content ?? "";
-    }
+    } **/
     var arr = <Map<String, dynamic>>[];
     return Container(
       width: double.infinity,
@@ -167,7 +170,7 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
                       ),
                     ]),
                 child: FlutterMentions(
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.next,
 
                   key: key,
                   style: TextStyle(fontSize: 12, color: Colors.black),
@@ -185,15 +188,12 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
                     prefixIcon: Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: CachedNetworkImage(
-                        imageUrl:
-                            "${Provider.of<AuthProvider>(context, listen: false)?.user?.image != null ? Provider.of<AuthProvider>(context, listen: false)?.user?.image : "https://firebasestorage.googleapis.com/v0/b/talkabout-bf655.appspot.com/o/avatar%2Fman.jpg?alt=media"}",
-                        placeholder: (context, url) =>
-                            CircularProgressIndicator(),
+                        imageUrl:"${Provider.of<AuthProvider>(context, listen: false)?.user?.image != null ? Provider.of<AuthProvider>(context, listen: false)?.user?.image : "https://firebasestorage.googleapis.com/v0/b/talkabout-bf655.appspot.com/o/avatar%2Fman.jpg?alt=media"}",
+                        placeholder: (context, url) =>  CircularProgressIndicator(),
                         errorWidget: (context, url, error) => Container(
                           height: 25,
                           width: 25,
-                          child: Image.network(
-                              'https://firebasestorage.googleapis.com/v0/b/talkabout-bf655.appspot.com/o/avatar%2Fman.jpg?alt=media'),
+                          child: Image.network('https://firebasestorage.googleapis.com/v0/b/talkabout-bf655.appspot.com/o/avatar%2Fman.jpg?alt=media'),
                         ),
                         imageBuilder: (context, imageProvider) => Container(
                           height: 25,
@@ -204,8 +204,7 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
                             image: DecorationImage(
                                 image: imageProvider,
                                 fit: BoxFit.cover,
-                                colorFilter: ColorFilter.mode(
-                                    Colors.amber, BlendMode.colorBurn)),
+                                colorFilter: ColorFilter.mode(Colors.amber, BlendMode.colorBurn)),
                           ),
                         ),
                       ),
@@ -222,10 +221,27 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
                       _showList = val;
                     });
                   },
-                  onSearchChanged: (
-                    trigger,
-                    value,
-                  ) {
+                  onMentionAdd: (mappedUser){
+
+                    if(mappedUser != null){
+                      mentionedUser = mappedUser;
+                      print("mentioned user: ${mentionedUser}");
+
+                    }
+                  },
+                  suggestionListDecoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30) ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 0.5,
+                          blurRadius: 2,
+                          offset:
+                          Offset(0, -3), // changes position of shadow
+                        ),
+                ]),
+                  onSearchChanged: (trigger, value) {
                     print('again | $trigger | $value ');
                   },
                   hideSuggestionList: false,
@@ -244,26 +260,16 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
                         matchAll: false,
                         data: _users,
                         suggestionBuilder: (data) {
-                          print("SOMETHINGGGGGGGGG");
+                          //print("SOMETHINGGGGGGGGG");
                           //print(data);
                           return Container(
-                            decoration:
-                                BoxDecoration(color: Colors.white, boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 2,
-                                offset:
-                                    Offset(0, 1), // changes position of shadow
-                              ),
-                            ]),
+
                             padding: EdgeInsets.all(10.0),
                             child: Row(
                               children: <Widget>[
                                 CircleAvatar(
                                   backgroundImage: NetworkImage(
-                                    data['image'] ??
-                                        "https://firebasestorage.googleapis.com/v0/b/talkabout-bf655.appspot.com/o/avatar%2Fman.jpg?alt=media",
+                                    data['image'] ?? "https://firebasestorage.googleapis.com/v0/b/talkabout-bf655.appspot.com/o/avatar%2Fman.jpg?alt=media",
                                   ),
                                 ),
                                 SizedBox(
@@ -272,7 +278,6 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
                                 Column(
                                   children: <Widget>[
                                     Text(data['display']),
-                                    //ext('@${data['user']}'),
                                   ],
                                 )
                               ],
@@ -314,19 +319,19 @@ class _KeyboardAttachableFooterState extends State<KeyboardAttachableFooter> {
                         //Get.back();
                         Provider.of<ProductsProvider>(context, listen: false)
                             .createReview(
-                                key.currentState.controller.text,
+                            key.currentState.controller.text,
                                 rating,
-                                Provider.of<AuthProvider>(context,
-                                        listen: false)
-                                    .user
-                                    .ref,
-                                Provider.of<ProductsProvider>(context,
-                                        listen: false)
-                                    .selectProduct
-                                    .ref);
+                                Provider.of<AuthProvider>(context, listen: false).user.ref,
+                                Provider.of<ProductsProvider>(context, listen: false).selectProduct.ref
+                        );
+                        Provider.of<ProductsProvider>(context, listen: false).mentionUser(
+                            mentionedUser,
+                            Provider.of<AuthProvider>(context, listen: false).user.name ?? "",
+                            Provider.of<ProductsProvider>(context, listen: false).selectProduct.ref ?? ""
+                        );
                         setState(() {
                           rating = 0.0;
-                          reviewController.clear();
+                          key.currentState.controller.clear();
                         });
                       },
                       color: mainColor3,
@@ -381,14 +386,23 @@ class ReviewsList extends StatefulWidget {
 }
 
 class _ReviewsListState extends State<ReviewsList> {
-  Widget reviewContainer(Reviews review) {
-    var inSeconds = Jiffy(DateTime.now()).diff(review.createdAt, Units.SECOND);
-    var inMinutes = Jiffy(DateTime.now()).diff(review.createdAt, Units.MINUTE);
-    var inHours = Jiffy(DateTime.now()).diff(review.createdAt, Units.HOUR);
-    var inWeeks = Jiffy(DateTime.now()).diff(review.createdAt, Units.WEEK);
-    var inDays = Jiffy(DateTime.now()).diff(review.createdAt, Units.DAY);
-    var inMonths = Jiffy(DateTime.now()).diff(review.createdAt, Units.MONTH);
-    var inYears = Jiffy(DateTime.now()).diff(review.createdAt, Units.YEAR);
+
+  List<TextEditingController> _controllers = new List<TextEditingController>();
+
+  @override
+  initState(){
+    super.initState();
+  }
+
+
+  Widget reviewContainer(Reviews review, TextEditingController revController) {
+    var inSeconds = Jiffy(DateTime.now()).diff(review.updatedAt, Units.SECOND);
+    var inMinutes = Jiffy(DateTime.now()).diff(review.updatedAt, Units.MINUTE);
+    var inHours = Jiffy(DateTime.now()).diff(review.updatedAt, Units.HOUR);
+    var inWeeks = Jiffy(DateTime.now()).diff(review.updatedAt, Units.WEEK);
+    var inDays = Jiffy(DateTime.now()).diff(review.updatedAt, Units.DAY);
+    var inMonths = Jiffy(DateTime.now()).diff(review.updatedAt, Units.MONTH);
+    var inYears = Jiffy(DateTime.now()).diff(review.updatedAt, Units.YEAR);
 
     var elapsed = inSeconds;
     String end = "second(s)";
@@ -446,7 +460,7 @@ class _ReviewsListState extends State<ReviewsList> {
                   true, // setting it true will show initials text above profile picture, default false
               child: CachedNetworkImage(
                 imageUrl:
-                    '${review?.user?.image != null ? review?.user?.image : "https://pixabay.com/get/57e5d3464256b10ff3d89960c62e3779103fdced5b53_640.png"}',
+                    '${review?.user?.image != null ? review?.user?.image : "https://firebasestorage.googleapis.com/v0/b/talkabout-bf655.appspot.com/o/avatar%2Fman.jpg?alt=media"}',
                 placeholder: (context, url) => CircularProgressIndicator(),
                 errorWidget: (context, url, error) => Icon(
                   Icons.error,
@@ -474,6 +488,7 @@ class _ReviewsListState extends State<ReviewsList> {
                 Text(
                   review?.content.capitalize ?? "",
                   style: TextStyle(
+                    height: 1.2,
                     color: Colors.black,
                     fontSize: 12,
                   ),
@@ -483,30 +498,68 @@ class _ReviewsListState extends State<ReviewsList> {
                     Text(
                       '${elapsed} ${end}',
                       style: TextStyle(
-                          color: Colors.black,
+                          color: mainColor3,
                           fontSize: 12,
-                          fontFamily: 'PoppinsSemiBold'),
+                          fontFamily: 'PoppinsRegular'),
                     ),
                     SizedBox(
                       width: 15,
                     ),
-                    InkWell(
-                        onTap: () {
-                          Provider.of<ProductsProvider>(context, listen: false)
-                              .setSelectedReview(review);
-                        },
-                        child: Text(
-                          'Edit',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 12,
-                              fontFamily: 'PoppinsSemiBold'),
-                        )),
+
                   ],
-                )
+                ),
+
+                //edit review row
+                Provider.of<AuthProvider>(context, listen: true)?.user?.ref == review?.user?.ref ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(child: TextField(
+                        style: TextStyle(fontSize: 12, color: Colors.black, fontFamily: 'PoppinsRegular'),
+                        controller: revController,
+                        maxLines: 1,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: mainColor6,
+                        ),
+                      )),
+                      SizedBox(width: 20,),
+                      editBtn(review.sId, revController)
+                    ],
+                  ),
+                ) : Container()
               ],
             ))
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget editBtn(String id, TextEditingController controller) {
+    return SizedBox(
+      width: Get.width * 0.25,
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)),
+        onPressed: () {
+          print(controller.text);
+          if(controller.text.isNotEmpty){
+            Provider.of<ProductsProvider>(context, listen: false).editReview(id, controller.text);
+          }else{
+            showErrorLoader("Review cannot be empty");
+          }
+        },
+        color: mainColor5,
+        child: Text(
+          "Edit",
+          style: TextStyle(color: Colors.white, fontSize: 12),
         ),
       ),
     );
@@ -523,9 +576,12 @@ class _ReviewsListState extends State<ReviewsList> {
               .length,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int i) {
+            for(var k = 0; k < Provider.of<ProductsProvider>(context, listen: true).allReviews.length; k ++){
+              _controllers.add(new TextEditingController());
+            }
             return reviewContainer(
                 Provider.of<ProductsProvider>(context, listen: false)
-                    .allReviews[i]);
+                    .allReviews[i], _controllers[i]);
           }),
     );
   }

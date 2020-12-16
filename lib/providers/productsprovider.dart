@@ -236,6 +236,65 @@ class ProductsProvider extends ChangeNotifier {
     }
   }
 
+  editReview(String id, String content) async {
+    showLoader("loading...");
+    final response = await httpService.editReviewRequest(id, content);
+
+    if (response == null) {
+      dismissLoader();
+      showErrorLoader("Network error. Try again.");
+      return;
+    }
+    int statusCode = response.statusCode;
+    var payload = response.data;
+    print(response);
+    print(payload);
+
+    if (payload['status'] == 'success' && statusCode == 200) {
+      dismissLoader();
+      productReviews(_selectedProduct.ref ?? "");
+    } else if (payload['status'] == 'failed' && statusCode == 500) {
+      dismissLoader();
+      showErrorLoader(payload['message']);
+    } else {
+      dismissLoader();
+      showErrorLoader("unknown error occurred authenicating user");
+    }
+  }
+
+  mentionUser(Map<String, dynamic> user, String mentionedBy, String prodRef) async {
+    //showLoader("loading...");
+    String userRef = user['ref'] ?? "";
+    print("user ref to use: ${userRef}");
+    final response = await httpService.mentionUserRequest(userRef, mentionedBy, prodRef);
+
+    if (response == null) {
+      //dismissLoader();
+      //showErrorLoader("Network error. Try again.");
+      return;
+    }
+    int statusCode = response.statusCode;
+    var payload = response.data;
+    print(response);
+    print(payload);
+
+    if (payload['status'] == 'success' && statusCode == 200) {
+      //dismissLoader();
+      //productReviews(_selectedProduct.ref ?? "");
+    } else if (payload['status'] == 'failed' && statusCode == 500) {
+      //dismissLoader();
+      //showErrorLoader(payload['message']);
+    } else if (payload['status'] == 'failed' && statusCode == 404) {
+      //dismissLoader();
+      //showErrorLoader(payload['message']);
+    } else {
+      //dismissLoader();
+      //showErrorLoader("unknown error occurred authenicating user");
+    }
+  }
+
+
+
   productReviews(String prodRef) async {
     showLoader("loading...");
     final response = await httpService.productReviewsRequest(prodRef);

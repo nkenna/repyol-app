@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:repyol/helpers/controlloader.dart';
-
 import 'package:repyol/helpers/data.dart';
 import 'package:repyol/models/category.dart';
 import 'package:repyol/models/createfavoriteproduct.dart';
@@ -87,7 +86,7 @@ class _LandingScreenState extends State<LandingScreen> {
     });
     _firebaseMessaging.getToken().then((String token) {
       //assert(token != null);
-      print(token);
+      print("device token: ${token}");
       if(token != null && token.isNotEmpty){
         Provider.of<AuthProvider>(context, listen: false).addToken(token, Provider.of<AuthProvider>(context, listen: false)?.user?.ref ?? "", Platform.isIOS ? "ios" : "android");
       }

@@ -869,4 +869,93 @@ class HttpService {
   }
 
 
+  Future<Response> editReviewRequest(String id, String content) async{
+    print("insode http");
+    var url = baseUrl + "v1/api/reviews/edit-review";
+    print(url);
+    var dio = Dio();
+    try {
+      dio.options.headers = {
+        HttpHeaders.acceptHeader: ' application/json',
+        HttpHeaders.contentTypeHeader: 'application/json'
+      };
+      var body = jsonEncode(
+          <String, dynamic>{
+            "id": id,
+            "content": content,
+
+          }
+      );
+      print(body);
+      //print(image.path);
+      dio.options.connectTimeout = 35000;
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+            contentType: 'application/json',
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+              HttpHeaders.acceptHeader: ' application/json'
+            }
+        ),
+      );
+      print("this response");
+      print(response.statusCode);
+      print(response);
+      print("");
+      print("");
+      print(response.data);
+      return response;
+    } on DioError catch (e) {
+      print(e?.response ?? "");
+      return e.response != null ? e.response : null;
+    }
+  }
+
+  Future<Response> mentionUserRequest(String userRef, String mentionedBy, prodRef) async{
+    print("insode http");
+    var url = baseUrl + "v1/api/reviews/mention-user";
+    print(url);
+    var dio = Dio();
+    try {
+      dio.options.headers = {
+        HttpHeaders.acceptHeader: ' application/json',
+        HttpHeaders.contentTypeHeader: 'application/json'
+      };
+      var body = jsonEncode(
+          <String, dynamic>{
+            "userRef": userRef,
+            "mentionedBy": mentionedBy,
+            "prodRef": prodRef
+          }
+      );
+      print(body);
+      //print(image.path);
+      dio.options.connectTimeout = 35000;
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+            contentType: 'application/json',
+            headers: {
+              HttpHeaders.contentTypeHeader: 'application/json',
+              HttpHeaders.acceptHeader: ' application/json'
+            }
+        ),
+      );
+      print("this response");
+      print(response.statusCode);
+      print(response);
+      print("");
+      print("");
+      print(response.data);
+      return response;
+    } on DioError catch (e) {
+      print(e?.response ?? "");
+      return e.response != null ? e.response : null;
+    }
+  }
+
+
 }

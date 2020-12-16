@@ -105,13 +105,13 @@ class _AddProductImagesScreenState extends State<AddProductImagesScreen> {
               color: mainColor7,
               borderRadius: BorderRadius.all(Radius.circular(10)),
               image: _files[i].isNull ? DecorationImage(
-                  image: AssetImage("assets/images/phone2.png"),
+                  image: AssetImage("assets/images/applogo.png"),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(Colors.amber, BlendMode.colorBurn)
               ):
               DecorationImage(
                   image: FileImage(_files[i]),
-                  fit: BoxFit.fitHeight
+                  fit: BoxFit.fill
               )
           ),
 
@@ -129,6 +129,12 @@ class _AddProductImagesScreenState extends State<AddProductImagesScreen> {
 
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Tap on any of these boxes to add your Product or Brand Image. You can select a minimum of two (2) and maximum of four(4).",
+                style: TextStyle(color: mainColor3, fontSize: 12, fontFamily: 'PoppinsSemiBold'),
+              ),
+            ),
             Expanded(
                 child: Row(
                   children: [
